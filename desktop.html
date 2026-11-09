@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2P Köprüsü — Bilgisayar</title>
+
+<!-- GÜVENLİK AĞI: Telefondan desktop.html açılırsa anında mobile.html'e yönlendir -->
+<script>
+  (function() {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+                     || (window.innerWidth < 768 && 'ontouchstart' in window);
+    if (isMobile && !location.search.includes('forceDesktop')) {
+      const mode = new URLSearchParams(location.search).get('mode') || 'pair';
+      location.replace('mobile.html?mode=' + mode);
+    }
+  })();
+</script>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body class="desktop">
+<div class="header">
+  <h2 id="modeTitle">Birebir Bağlantı</h2>
+  <div class="badges">
+    <span class="badge qos hidden" id="qosBadge">RTT: —</span>
+    <span class="badge" id="statusBadge">Bağlantı bekleniyor…</span>
+    <button class="icon-btn" id="themeBtn" title="Tema">🌙</button>
+  </div>
+</div>
+
+<!-- PAIR MODU -->
+<div class="main" id="pairView">
+  <div class="panel panel-left">
+    <div class="qr-area">
+      <canvas id="qrCanvas" width="220" height="220"></canvas>
+      <div class="id-text" id="peerIdText" title="Tıkla ve kopyala"></div>
+      <button class="copy-btn" id="copyIdBtn">📋 ID'yi Kopyala</button>
+      <p class="hint">Telefonunuzda <b>mobile.html</b>'i açın, QR kodu okutun veya ID'yi girin.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="chat-area">
+      <div class="messages" id="messages"></div>
+      <div class="progress-wrap hidden" id="progressWrap">
+        <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText"></div>
+      </div>
+      <div class="input-area">
+        <input type="text" id="msgInput" placeholder="Mesaj yazın…" disabled>
+        <button id="sendBtn" disabled>➤ Gönder</button>
+        <label class="file-btn">📎 Dosya<input type="file" id="fileInput" class="file-input" disabled></label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEACHER MODU -->
+<div class="main hidden" id="teacherView">
+
+  <!-- Aşama 1: Dosya seç -->
+  <div class="panel" id="teacherStage1">
+    <h3>Önce göndereceğiniz dosyayı seçin</h3>
+    <p>Dosyayı seçtikten sonra QR kod ve bağlantı ID'si oluşturulacak.
+       Öğrenciler ancak o zaman bağlanabilecek.</p>
+    <label class="file-btn">
+      📁 Dosya Seç
+      <input type="file" id="teacherFile" class="file-input">
+    </label>
+    <span class="file-name" id="teacherFileName">Dosya seçilmedi</span>
+  </div>
+
+  <!-- Aşama 2: QR + log (başta gizli) -->
+  <div class="panel panel-left hidden" id="teacherStage2_left">
+    <div class="qr-area">
+      <canvas id="teacherQrCanvas" width="320" height="320"></canvas>
+      <div class="id-text" id="teacherIdText" title="Tıkla ve kopyala"></div>
+      <button class="copy-btn" id="copyTeacherIdBtn">📋 ID'yi Kopyala</button>
+      <p class="hint">Öğrenciler bu QR'ı okutarak veya ID girerek bağlanır.</p>
+    </div>
+  </div>
+  <div class="panel hidden" id="teacherStage2_right">
+    <div class="teacher-header">
+      <label class="file-btn">📁 Dosya Değiştir<input type="file" id="teacherFile2" class="file-input"></label>
+      <span class="file-name" id="teacherFileName2">Dosya seçilmedi</span>
+      <span class="conn-count" id="connCount">0 öğrenci</span>
+    </div>
+    <div class="teacher-log" id="teacherLog"></div>
+
+    <!-- Birebir bağlantıya geç butonu -->
+    <button id="toPairBtn" type="button">💬 Birebir Bağlantıya Geç</button>
+  </div>
+
+</div>
+
+<div class="drop-overlay" id="dropOverlay">📎 Dosyayı bırakın</div>
+
+<!-- ============ JS MODÜLLERİ ============ -->
+<script src="js/utils.js"></script>
+<script src="js/qrcode.js"></script>
+<script src="js/webrtc.js"></script>
+<script src="js/filetransfer.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/broadcast.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

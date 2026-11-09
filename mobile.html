@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>P2P Köprüsü — Mobil</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body class="mobile">
+<div class="header">
+  <h2 id="modeTitle">Öğrenci Modu</h2>
+  <div class="right">
+    <span class="status" id="statusBadge">Bağlantı bekleniyor</span>
+    <button class="icon-btn" id="themeBtn">🌙</button>
+  </div>
+</div>
+
+<!-- BAĞLANMA -->
+<div class="view" id="connectView">
+  <div class="connect-box">
+    <div class="notice" id="deviceNotice" style="display:none"></div>
+    <input type="text" id="peerIdInput" placeholder="Hocanın ID'sini girin…" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button id="connectBtn">Bağlan</button>
+    <button id="scanBtn" class="secondary">📷 Kamera ile QR Okut</button>
+    <div id="qrReader" class="hidden"></div>
+    <p class="hint" id="hintText">Hocanın ekranındaki ID'yi girin veya QR kodu okutun.</p>
+  </div>
+</div>
+
+<!-- SOHBET -->
+<div class="view hidden" id="chatView">
+  <div class="messages" id="messages"></div>
+  <div class="progress-wrap hidden" id="progressWrap">
+    <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText"></div>
+  </div>
+  <div class="input-area">
+    <input type="text" id="msgInput" placeholder="Mesaj…" disabled>
+    <button id="sendBtn" disabled>➤</button>
+    <label class="file-btn"><input type="file" id="fileInput" class="file-input" disabled>📎</label>
+  </div>
+</div>
+
+<!-- ============ JS MODÜLLERİ ============ -->
+<script src="js/utils.js"></script>
+<script src="js/qrcode.js"></script>
+<script src="js/webrtc.js"></script>
+<script src="js/filetransfer.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>P2P Köprüsü — Rol Seçimi</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="stylesheet" href="css/style.css">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body class="index">
+<h1>P2P Köprüsü</h1>
+<p class="sub">Uçtan uca şifreli, sunucusuz dosya transferi</p>
+<div class="roles">
+  
+  <!-- DİKKAT: onclick SİLİNDİ, id EKLENDİ -->
+  <div class="role-btn" id="pairBtn">
+    <span class="icon">💻</span>
+    <div><div class="title">Birebir Bağlantı</div><div class="desc">Bilgisayar ↔ Telefon sohbet + dosya</div></div>
+  </div>
+
+  <div class="role-btn" id="teacherBtn" onclick="location.href='desktop.html?mode=teacher'">
+    <span class="icon">👨‍🏫</span>
+    <div><div class="title">Hoca Modu</div><div class="desc">Toplu dosya dağıtımı (masaüstü)</div></div>
+  </div>
+
+  <div class="role-btn" onclick="location.href='mobile.html?mode=student'">
+    <span class="icon">🎓</span>
+    <div><div class="title">Öğrenci Modu</div><div class="desc">Dosya alıcı (telefon/bilgisayar)</div></div>
+  </div>
+
+</div>
+
+<script src="js/utils.js"></script>
+<script>
+  if (Utils.isMobile) {
+    document.getElementById('teacherBtn').classList.add('disabled');
+  }
+
+  // Cihaza göre yönlendirme
+  document.getElementById('pairBtn').onclick = () => {
+    if (Utils.isMobile) {
+      location.href = 'mobile.html?mode=pair'; // Telefon
+    } else {
+      location.href = 'desktop.html?mode=pair'; // Bilgisayar
+    }
+  };
+
+  Utils.registerSW();
+</script>
+</body>
+</html>
